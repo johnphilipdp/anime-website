@@ -30,6 +30,4 @@ animeSchema.pre("validate", function(next) {
     next()
 })
 
-const Anime = mongoose.model('Anime', animeSchema)
-
-module.exports = Anime
+module.exports = mongoose.model('Anime', animeSchema)
