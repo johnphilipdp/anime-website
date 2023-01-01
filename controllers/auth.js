@@ -1,6 +1,15 @@
 
 const User = require('../models/User')
 
+const getUsers = async(req, res, next) => {
+    const data = await User.find({})
+
+    res.status(200).json({
+        message: "Showing list of users.",
+        data: data
+    })
+}
+
 const login = async(req,res,next) => {
     const { email, password } = req.body
 
@@ -25,13 +34,8 @@ const login = async(req,res,next) => {
         return res.status(401).json({message: 'Invalid Login Credentials'})
     }
 
-    // get token
-    const token = user.getSignedJwtToken()
-
-    res.status(200).json({
-        message: "Logged in success.",
-        token
-    })
+   
+    sendTokenResponse(user, 200, res)
 
 }
 
@@ -40,17 +44,31 @@ const register = async(req,res,next) => {
     const user = await User.create({
         name, email, role, password
     })
-    
-    // create token
+   
+
+    sendTokenResponse(user, 200, res)
+}
+
+// Get token from model, create cookie and send a response
+const sendTokenResponse = (user, statusCode, res) => {
     const token = user.getSignedJwtToken()
-    
-    res.status(200).json({
-        message: "Success",
-        token
-    })
+
+    const options = {
+        expires: new Date(Date.now() + process.env.JWT_COOKIE_EXPIRE * 24 * 60 * 60 * 1000),
+        httpOnly: true
+    }
+
+    if(process.env.NODE_ENV === 'production') {
+        options.secure = true
+    }
+
+    res.status(statusCode)
+        .cookie('token', token, options)
+        .json({ success: true, token})
 }
 
 module.exports = {
+    getUsers,
     login,
     register
 }
