@@ -1,0 +1,12 @@
+.anime-lists {
+    &_item {
+        display: flex;
+
+        img {
+            margin-right: 1rem;
+            width: 21.875rem;
+            height: 25rem;
+            object-fit: cover;
+        }
+    }
+}

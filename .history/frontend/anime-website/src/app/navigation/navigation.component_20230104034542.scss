@@ -1,0 +1,29 @@
+nav {
+    display: flex;
+    align-items: center;
+
+    a {
+        margin-right: 1rem;
+        transition: all .3s ease;
+
+        &.logo {
+            font-size: 3rem;
+            font-weight: bold;
+            position: relative;
+            display: block;
+
+            span {
+                font-size: 0.7rem;
+                position: absolute;
+                letter-spacing: 1px;
+                bottom: 0;
+                left: 50%;
+                margin-left: -1.5rem;
+            }
+        }
+
+        &:hover {
+            color: #f56e6e;
+        }
+    }
+}

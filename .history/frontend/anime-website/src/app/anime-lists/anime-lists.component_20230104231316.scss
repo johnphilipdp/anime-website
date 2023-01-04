@@ -1,0 +1,15 @@
+.anime-lists {
+    margin-top: 5rem;
+    display: flex;
+
+}
+.anime-lists_item-wrapper {
+    background: #fff;
+    display: flex;
+    position: relative;
+    width: calc(100% / 2 - 1rem);
+
+    @media (min-width: 1024px) {
+        width: calc(100% / 3 - 1rem);
+    }
+}

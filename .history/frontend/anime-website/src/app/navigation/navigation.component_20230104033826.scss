@@ -1,0 +1,18 @@
+nav {
+    display: flex;
+    align-items: center;
+
+    a {
+        margin-right: 1rem;
+        transition: all .3s ease;
+
+        &.logo {
+            font-weight: bold;
+            font-size: 2rem;
+        }
+
+        &:hover {
+            color: #f56e6e;
+        }
+    }
+}

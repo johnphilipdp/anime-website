@@ -1,0 +1,90 @@
+:host {
+
+    background: #fff;
+    position: relative;
+    margin-bottom: 1rem;
+    width: 100%;
+
+    @media (min-width: 540px) {
+        width: calc(100% / 2 - 1rem);
+    }
+
+    @media (min-width: 1024px) {
+        width: calc(100% / 3 - 1rem);
+    }
+
+    &:after {
+
+        z-index: -1;
+        position: absolute;
+        content: "";
+        bottom: 15px;
+        right: 10px;
+        left: auto;
+        width: 50%;
+        top: 80%;
+        max-width: 300px;
+        background: #777;
+        -webkit-box-shadow: 0 15px 10px #777;
+        -moz-box-shadow: 0 15px 10px #777;
+        box-shadow: 0 15px 10px #777;
+        -webkit-transform: rotate(3deg);
+        -moz-transform: rotate(3deg);
+        -o-transform: rotate(3deg);
+        -ms-transform: rotate(3deg);
+        transform: rotate(3deg);
+    }
+}
+
+
+.anime-lists_item {
+    @media (min-width: 540px) {
+        display: flex;
+    }
+
+
+
+    p {
+        font-size: 0.7rem;
+        line-height: 1.2rem;
+    }
+
+    img {
+        margin-right: 1rem;
+        object-fit: cover;
+        height: 9rem;
+        width: 100%;
+
+
+        @media (min-width: 540px) {
+            width: 50%;
+            height: 18rem;
+        }
+
+    }
+
+    &--description {
+        width: 100%;
+        position: relative;
+        padding: 0.7rem 0.7rem 2rem 0.7rem;
+        @media (min-width: 540px) {
+            width: 50%;
+        }
+    }
+
+    &--actions {
+        position: absolute;
+        bottom: 0;
+        right: 0;
+
+        button {
+            width: 1.3rem;
+            margin-right: 1.3rem;
+            height: auto;
+
+            svg {
+                width: 100%;
+            }
+        }
+    }
+}
