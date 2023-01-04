@@ -6,7 +6,7 @@ Built with Mongo Express Angular Node | MEAN Stack
 ## Description
 
 I realized that I have been storing my pending animes to watch in every notepad i can put my hands on or 
-blank messages on messenger. So I decided to create a website for it .
+blank messages on messenger. So I decided to create a website to keep it organized with more other features 😃
 
 ### Fun Features Will Be Added
 
