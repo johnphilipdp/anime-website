@@ -1,4 +1,5 @@
-# Full Stack Anime to watch lists | WTW - Watch to watch ?
+# Full Stack Anime to watch lists
+# | WTW - Watch to watch ?
 
 Built with Mongo Express Angular Node | MEAN Stack
 
