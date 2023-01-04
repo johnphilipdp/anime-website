@@ -5,7 +5,8 @@ Built with Mongo Express Angular Node | MEAN Stack
 
 ## Description
 
-The goal is to store every pending animes to watch in a simple way
+I realized that I have been storing my pending animes to watch in every notepad i can put my hands on or 
+blank messages on messenger. So I decided to create a website for it .
 
 ### Fun Features Will Be Added
 
