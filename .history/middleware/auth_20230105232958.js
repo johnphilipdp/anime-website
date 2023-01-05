@@ -36,13 +36,5 @@ exports.protectRoute = async(req, res ,next) => {
 
 // Only admin has access to main list of animes
 exports.authorize = (...roles) => {
-    return (req, res , next) => {
-        if(!roles.includes(req.user.role)) {
-            return next(res.status(400).json({
-                success: false,
-                message: 'Unauthorized'
-            }))
-        }
-        next()
-    }
+
 }

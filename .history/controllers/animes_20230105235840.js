@@ -29,22 +29,8 @@ const getAnimes = async (req, res) => {
 
 // @desc: GET list of animes for specific user
 // @route: GET api/v1/user/:userID/animes
-const getUserAnimes = async(req,res) => {
-    let query;
+const getUserAnime = async(req,res) => {
 
-    if(req.params.userId) {
-        query = Anime.find({ user: req.params.userId })
-    } else {
-        query = Anime.find()
-    }
-
-    const userAnimes = await query
-
-    res.status(200).json({
-        success: true,
-        total: userAnimes.length,
-        data: userAnimes
-    })
 }
 
 const getAnime = async (req, res) => {
@@ -59,7 +45,7 @@ const getAnime = async (req, res) => {
 
 const updateAnime = async (req, res) => {
     const id = req.params.id
-    const data = await Anime.findByIdAndUpdate(id, req.body, { new: true })
+    const data = await Anime.findByIdAndUpdate(id, req.body)
     res.status(200).json({
         success: true,
         message: `Updated anime: ${id}`,
@@ -79,7 +65,6 @@ const deleteAnime = async (req,res) => {
 module.exports = {
     createAnime,
     getAnimes,
-    getUserAnimes,
     getAnime,
     updateAnime,
     deleteAnime

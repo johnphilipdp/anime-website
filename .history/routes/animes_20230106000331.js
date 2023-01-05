@@ -18,8 +18,6 @@ router.route('/animes')
     .post(protectRoute, createAnime)
     .get(getAnimes)
 
-    // GET User animes
-
 router.route('/user/:userId/animes')
     .get(protectRoute, getUserAnimes)
 

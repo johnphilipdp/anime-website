@@ -8,7 +8,6 @@ const { protectRoute, authorize } = require('../middleware/auth')
 const {
     createAnime,
     getAnimes,
-    getUserAnimes,
     getAnime,
     updateAnime,
     deleteAnime
@@ -17,11 +16,6 @@ const {
 router.route('/animes')
     .post(protectRoute, createAnime)
     .get(getAnimes)
-
-    // GET User animes
-
-router.route('/user/:userId/animes')
-    .get(protectRoute, getUserAnimes)
 
 router.route('/animes/:id')
     .get(getAnime)

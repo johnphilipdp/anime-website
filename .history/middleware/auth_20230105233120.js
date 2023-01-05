@@ -43,6 +43,5 @@ exports.authorize = (...roles) => {
                 message: 'Unauthorized'
             }))
         }
-        next()
     }
 }
