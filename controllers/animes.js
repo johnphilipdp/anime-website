@@ -22,7 +22,7 @@ exports.getAnimes = async (req, res) => {
     res.status(200).json({
         success: true,
         message: 'Display list of animes.',
-        total: data.length,
+        count: data.length,
         data: data
     })
 }

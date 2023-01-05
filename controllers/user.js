@@ -58,8 +58,7 @@ exports.addAnimeToList = async(req, res) => {
 
     return res.status(200).json({
         success: true,
-        message: 'Anime added to your list.',
-        data: data
+        message: 'Anime added to your list.'
     })
 }
 
@@ -67,13 +66,13 @@ exports.addAnimeToList = async(req, res) => {
 // @DESC: Method> GET -
 // @route: /api/v1/users/:userId/lists
 exports.getUserWatchList = async(req, res) => {
-    const data = await User.findById({id: req.params.userId}).populate("watchList")
-
+    const data = await User.findById(req.params.userId).populate("watchList")
 
     return res.status(200).json({
         success: true,
+        count: data.watchList.length,
         message: `Displaying watch list for ${req.params.userId}`,
-        data: data
+        data: data.watchList
     })
 
 }

@@ -26,7 +26,6 @@ const animeSchema = new Schema({
         ref: 'User',
         required: true
     },
-    userList: Array,
     slug: String
 })
 

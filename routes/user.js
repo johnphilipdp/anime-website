@@ -5,12 +5,13 @@ const { getUsers, register, login, getCurrentUser, addAnimeToList, getUserWatchL
 
 const router = express.Router()
 
-router.get('/users', getUsers)
-router.get('/users/:userId/lists', protectRoute, getUserWatchList)
-router.route('/users/:userId/lists/:animeId')
+router.get('/', getUsers)
+router.get('/:userId/lists', protectRoute, getUserWatchList)
+router.route('/:userId/lists/:animeId')
     .post(protectRoute, addAnimeToList)
     .delete(protectRoute, removeAnimeFromList)
 
+// @TODO: move to another route file named auth
 router.get('/me', protectRoute, getCurrentUser)
 router.post('/login', login)
 router.post('/register', register)
