@@ -30,6 +30,12 @@ const userSchema = Schema({
     },
     resetPasswordToken: String,
     resetPasswordExpiration: Date,
+    watchList: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Anime'
+        }
+    ],
     createdAt: {
         type: Date,
         default: Date.now

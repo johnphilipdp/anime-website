@@ -6,7 +6,7 @@ const connectDB = require('./db')
 
 // routes
 const AnimeRoute = require('./routes/animes')
-const Auth = require('./routes/auth')
+const User = require('./routes/user')
 
 // body parser
 app.use(express.json())
@@ -15,7 +15,7 @@ app.use(express.json())
 app.use(cookieParser())
 
 app.use('/api/v1', AnimeRoute)
-app.use('/api/v1/auth', Auth)
+app.use('/api/v1/auth', User)
 
 const PORT = process.env.PORT || 8000
 

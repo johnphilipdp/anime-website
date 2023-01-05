@@ -8,11 +8,9 @@ const { protectRoute, authorize } = require('../middleware/auth')
 const {
     createAnime,
     getAnimes,
-    getUserAnimes,
     getAnime,
     updateAnime,
-    deleteAnime,
-    removeAnimeFromList
+    deleteAnime
 } = require('../controllers/animes')
 
 router.route('/animes')
@@ -25,12 +23,6 @@ router.route('/animes/:id')
     .put(protectRoute, authorize('admin'), updateAnime)
     .delete(protectRoute, authorize('admin'), deleteAnime)
 
-
-// GET User animes
-// POST add new anime to lists
-router.route('/animes/:userId/lists')
-    .get(protectRoute, getUserAnimes)
-    .put(protectRoute, removeAnimeFromList)
 
 
 module.exports = router

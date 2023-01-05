@@ -1,7 +1,7 @@
 
 const User = require('../models/User')
 
-const getUsers = async(req, res, next) => {
+exports.getUsers = async(req, res, next) => {
     const data = await User.find({})
 
     res.status(200).json({
@@ -10,7 +10,7 @@ const getUsers = async(req, res, next) => {
     })
 }
 
-const login = async(req,res,next) => {
+exports.login = async(req,res,next) => {
     const { email, password } = req.body
 
 
@@ -39,7 +39,7 @@ const login = async(req,res,next) => {
 
 }
 
-const register = async(req,res,next) => {
+exports.register = async(req,res,next) => {
     const { name, email, role, password } = req.body
     const user = await User.create({
         name, email, role, password
@@ -48,6 +48,50 @@ const register = async(req,res,next) => {
 
     sendTokenResponse(user, 200, res)
 }
+
+// @DESC: Method> POST -
+// @route: /api/v1/users/:userId/lists/:animeId
+exports.addAnimeToList = async(req, res) => {
+    const data = await User.findOneAndUpdate({_id: req.params.userId}, {
+        $addToSet: { watchList: req.params.animeId }
+    })
+
+    return res.status(200).json({
+        success: true,
+        message: 'Anime added to your list.',
+        data: data
+    })
+}
+
+
+// @DESC: Method> GET -
+// @route: /api/v1/users/:userId/lists
+exports.getUserWatchList = async(req, res) => {
+    const data = await User.findById({id: req.params.userId}).populate("watchList")
+
+
+    return res.status(200).json({
+        success: true,
+        message: `Displaying watch list for ${req.params.userId}`,
+        data: data
+    })
+
+}
+
+
+// @DESC: Method> DELETE -
+// @route: /api/v1/users/:userId/lists/:animeId
+exports.removeAnimeFromList = async (req, res) => {
+    await User.findByIdAndUpdate({_id: req.params.id}, {
+        $pull: { watchList: req.params.animeId }
+    })
+
+    return res.status(200).json({
+        success: true,
+        message: 'Removed from your list.'
+    })
+}
+
 
 // Get token from model, create cookie and send a response with both cookie and jwt token
 const sendTokenResponse = (user, statusCode, res) => {
@@ -67,18 +111,11 @@ const sendTokenResponse = (user, statusCode, res) => {
         .json({ success: true, token})
 }
 
-const getCurrentUser = async(req, res, next) => {
+exports.getCurrentUser = async(req, res, next) => {
     const user = await User.findById(req.user.id)
 
     res.status(200).json({
         success: true,
         data: user
     })
-}
-
-module.exports = {
-    getUsers,
-    login,
-    register,
-    getCurrentUser
 }
