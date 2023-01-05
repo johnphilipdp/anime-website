@@ -1,17 +1,35 @@
 const Anime = require('../models/Anime')
+const AnimeWatchList = require('../models/AnimeWatchList')
 
-exports.createAnime = async (req, res) => {
+const createAnime = async (req, res, next) => {
     req.body.user = req.user.id
 
     const data = await Anime.insertMany(req.body)
+
+
+    const animes = await AnimeWatchList.find({ user: req.body.user, anime: data._id })
+
+
     res.status(200).json({
         success: true,
         message: 'New anime has been added.',
         data: data
     })
+
+    // Check if user has the anime in their watch list if not add it to the list
+    if(animes) {
+        next()
+    } else {
+        await AnimeWatchList.insertMany({
+            user: req.body.user,
+            anime: data._id
+        })
+        next()
+    }
+
 }
 
-exports.getAnimes = async (req, res) => {
+const getAnimes = async (req, re) => {
     const data = await Anime.find({})
     if(!data) {
         res.status(400).json({
@@ -28,44 +46,26 @@ exports.getAnimes = async (req, res) => {
 }
 
 // @desc: GET list of animes for specific user
-// @route: GET api/v1/animes/:user-id/lists
-exports.getUserAnimes = async (req,res) => {
-    const userId = req.params.userId
+// @route: GET api/v1/user/:userID/animes
+const getUserAnimes = async(req,res) => {
+    let query;
 
-    const data = await Anime.find({
-        userList: {
-            $in: [userId]
-        }
-    })
+    if(req.params.userId) {
+        query = Anime.find({ user: req.params.userId })
+    } else {
+        query = Anime.find()
+    }
 
-    res.status(200).json({
-        success: true,
-        total: data.length,
-        data: data
-    })
-}
-
-
-// @desc: method: PUT - Update a specific anime then remove the user from the list that has the anime.
-// @route: api/v1/animes/:userId/lists
-exports.removeAnimeFromList = async(req, res) => {
-    const userId = req.params.userId
-
-    const data = await Anime.updateOne({_id: req.body.anime_id}, {
-        $pull: {
-            userList: userId
-        }
-    })
+    const userAnimes = await query
 
     res.status(200).json({
         success: true,
-        message: "Anime removed from your list.",
-        data: data
+        total: userAnimes.length,
+        data: userAnimes
     })
 }
 
-
-exports.getAnime = async (req, res) => {
+const getAnime = async (req, res) => {
     const id = req.params.id
     const data = await Anime.findById(id)
     res.status(200).json({
@@ -75,10 +75,9 @@ exports.getAnime = async (req, res) => {
     })
 }
 
-exports.updateAnime = async (req, res) => {
+const updateAnime = async (req, res) => {
     const id = req.params.id
     const data = await Anime.findByIdAndUpdate(id, req.body, { new: true })
-
     res.status(200).json({
         success: true,
         message: `Updated anime: ${id}`,
@@ -86,11 +85,20 @@ exports.updateAnime = async (req, res) => {
     })
 }
 
-exports.deleteAnime = async (req,res) => {
+const deleteAnime = async (req,res) => {
     const id = req.params.id
     await Anime.findByIdAndDelete(id)
     res.status(200).json({
         success: true,
         message: `anime ${id} has been removed`
     })
+}
+
+module.exports = {
+    createAnime,
+    getAnimes,
+    getUserAnimes,
+    getAnime,
+    updateAnime,
+    deleteAnime
 }

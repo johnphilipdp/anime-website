@@ -31,7 +31,7 @@ exports.getAnimes = async (req, res) => {
 // @route: GET api/v1/animes/:user-id/lists
 exports.getUserAnimes = async (req,res) => {
     const userId = req.params.userId
-
+    console.log(userId)
     const data = await Anime.find({
         userList: {
             $in: [userId]
@@ -40,7 +40,6 @@ exports.getUserAnimes = async (req,res) => {
 
     res.status(200).json({
         success: true,
-        total: data.length,
         data: data
     })
 }
@@ -50,16 +49,12 @@ exports.getUserAnimes = async (req,res) => {
 // @route: api/v1/animes/:userId/lists
 exports.removeAnimeFromList = async(req, res) => {
     const userId = req.params.userId
+    const data = await Anime.findOneAndUpdate({ _id: userId }, { $pull: { userList: { userId } } })
 
-    const data = await Anime.updateOne({_id: req.body.anime_id}, {
-        $pull: {
-            userList: userId
-        }
-    })
 
     res.status(200).json({
         success: true,
-        message: "Anime removed from your list.",
+        message: 'Anime has been removed from your list',
         data: data
     })
 }

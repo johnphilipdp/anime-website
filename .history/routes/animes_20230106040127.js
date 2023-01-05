@@ -11,8 +11,7 @@ const {
     getUserAnimes,
     getAnime,
     updateAnime,
-    deleteAnime,
-    removeAnimeFromList
+    deleteAnime
 } = require('../controllers/animes')
 
 router.route('/animes')
@@ -27,10 +26,8 @@ router.route('/animes/:id')
 
 
 // GET User animes
-// POST add new anime to lists
-router.route('/animes/:userId/lists')
+router.route('/user/:userId/animes')
     .get(protectRoute, getUserAnimes)
-    .put(protectRoute, removeAnimeFromList)
 
 
 module.exports = router

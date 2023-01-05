@@ -51,7 +51,7 @@ exports.getUserAnimes = async (req,res) => {
 exports.removeAnimeFromList = async(req, res) => {
     const userId = req.params.userId
 
-    const data = await Anime.updateOne({_id: req.body.anime_id}, {
+    const data = Anime.updateOne({_id: req.body.anime_id}, {
         $pull: {
             userList: userId
         }

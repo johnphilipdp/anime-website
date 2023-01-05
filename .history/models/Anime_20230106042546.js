@@ -21,12 +21,7 @@ const animeSchema = new Schema({
         votes: Number,
         favs: Number
     },
-    user: {
-        type: mongoose.Types.ObjectId,
-        ref: 'User',
-        required: true
-    },
-    userList: Array,
+    user: Array,
     slug: String
 })
 
