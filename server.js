@@ -15,7 +15,7 @@ app.use(express.json())
 app.use(cookieParser())
 
 app.use('/api/v1', AnimeRoute)
-app.use('/api/v1/users', User)
+app.use('/api/v1/user', User)
 
 const PORT = process.env.PORT || 8000
 

@@ -64,14 +64,14 @@ exports.addAnimeToList = async(req, res) => {
 
 
 // @DESC: Method> GET -
-// @route: /api/v1/users/:userId/lists
+// @route: /api/v1/user//lists
 exports.getUserWatchList = async(req, res) => {
-    const data = await User.findById(req.params.userId).populate("watchList")
+    const data = await User.findById(req.user._id).populate("watchList")
 
     return res.status(200).json({
         success: true,
         count: data.watchList.length,
-        message: `Displaying watch list for ${req.params.userId}`,
+        message: `Displaying watch list for ${data.name}`,
         data: data.watchList
     })
 

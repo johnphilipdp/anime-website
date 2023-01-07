@@ -6,7 +6,7 @@ const { getUsers, register, login, getCurrentUser, addAnimeToList, getUserWatchL
 const router = express.Router()
 
 router.get('/', getUsers)
-router.get('/:userId/lists', protectRoute, getUserWatchList)
+router.get('/lists', protectRoute, getUserWatchList)
 router.route('/:userId/lists/:animeId')
     .post(protectRoute, addAnimeToList)
     .delete(protectRoute, removeAnimeFromList)
