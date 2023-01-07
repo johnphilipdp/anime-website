@@ -1,7 +1,7 @@
 const express = require('express')
 
 const { protectRoute } = require('../middleware/auth')
-const { getUsers, register, login, getCurrentUser, addAnimeToList, getUserWatchList, removeAnimeFromList } = require('../controllers/user')
+const { getUsers, register, login, getCurrentUser, addAnimeToList, getUserWatchList, removeAnimeFromList, forgotPassword, resetPassword } = require('../controllers/user')
 
 const router = express.Router()
 
@@ -15,5 +15,7 @@ router.route('/:userId/lists/:animeId')
 router.get('/me', protectRoute, getCurrentUser)
 router.post('/login', login)
 router.post('/register', register)
+router.post('/forgot', forgotPassword)
+router.put('/:token/reset', resetPassword)
 
 module.exports = router
