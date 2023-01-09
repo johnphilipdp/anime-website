@@ -7,6 +7,10 @@ const animeSchema = new Schema({
     title: String,
     producer: String,
     description: String,
+    image: {
+        type: String,
+        default: 'no-photo.jpg'
+    },
     comments: [
         {
             body: String,

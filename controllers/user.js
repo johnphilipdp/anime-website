@@ -15,7 +15,6 @@ exports.getUsers = async(req, res, next) => {
 exports.login = async(req,res,next) => {
     const { email, password } = req.body
 
-
     if(!email || !password) {
         return res.status(400).json({
             message: 'Email and password required.'
@@ -39,6 +38,18 @@ exports.login = async(req,res,next) => {
 
     sendTokenResponse(user, 200, res)
 
+}
+
+exports.logout = async(req,res,next) => {
+    res.cookie('token', 'none', {
+        expires: new Date(Date.now() + (30 * 60 * 1000)),
+        httpOnly: true
+    })
+
+    res.status(200).json({
+        success: true,
+        data: {}
+    })
 }
 
 exports.register = async(req,res,next) => {

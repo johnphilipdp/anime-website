@@ -27,7 +27,7 @@ exports.protectRoute = async(req, res ,next) => {
 
         next()
     } catch {
-        return next(res.status(401).json({
+        return next(res.status(400).json({
             success: false,
             message: 'Invalid Token'
         }))
