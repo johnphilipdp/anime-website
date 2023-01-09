@@ -165,6 +165,15 @@ exports.removeAnimeFromList = async (req, res) => {
     })
 }
 
+exports.getCurrentUser = async(req, res, next) => {
+    const user = await User.findById(req.user.id)
+
+    res.status(200).json({
+        success: true,
+        data: user
+    })
+}
+
 
 
 // Get token from model, create cookie and send a response with both cookie and jwt token
@@ -183,13 +192,4 @@ const sendTokenResponse = (user, statusCode, res) => {
     res.status(statusCode)
         .cookie('token', token, options)
         .json({ success: true, token})
-}
-
-exports.getCurrentUser = async(req, res, next) => {
-    const user = await User.findById(req.user.id)
-
-    res.status(200).json({
-        success: true,
-        data: user
-    })
 }

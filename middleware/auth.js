@@ -26,10 +26,10 @@ exports.protectRoute = async(req, res ,next) => {
         req.user = await User.findById(decoded.id)
 
         next()
-    } catch (error) {
+    } catch {
         return next(res.status(401).json({
             success: false,
-            message: error
+            message: 'Invalid Token'
         }))
     }
 }
