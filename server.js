@@ -1,7 +1,7 @@
 require('dotenv').config()
+const path = require('path')
 const express = require('express')
 const app = express()
-const cookieParser = require('cookie-parser')
 const connectDB = require('./db')
 // security
 const mongoSanitize = require('express-mongo-sanitize')
@@ -10,6 +10,7 @@ const xss = require('xss-clean')
 const rateLimit = require('express-rate-limit')
 const hpp = require('hpp')
 const cors = require('cors')
+const cookieParser = require('cookie-parser')
 
 // routes
 const AnimeRoute = require('./routes/animes')
@@ -44,15 +45,22 @@ app.use(hpp())
 // enable cors
 app.use(cors())
 
+app.use(express.static(path.join(__dirname, '/public')))
+
 app.use('/api/v1', AnimeRoute)
 app.use('/api/v1/user', User)
 
 const PORT = process.env.PORT || 8000
 
-app.listen(PORT, () => {
+const server = app.listen(PORT, () => {
     console.log(`Server is running on port: ${PORT}`)
 
     // db connect
     connectDB()
 })
 
+process.on('unhandledRejection', (err, promise) => {
+    console.log(`Error: ${err.message}`)
+
+    server.close(() => process.exit(1))
+})

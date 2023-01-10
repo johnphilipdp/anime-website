@@ -4,9 +4,15 @@ const slug = require('slug')
 const { Schema } = mongoose;
 
 const animeSchema = new Schema({
-    title: String,
+    title: {
+        type: String,
+        required: [true, 'Anime title is required.']
+    },
+    description: {
+        type: String,
+        required: [true, 'Anime description is required.']
+    },
     producer: String,
-    description: String,
     image: {
         type: String,
         default: 'no-photo.jpg'
@@ -34,8 +40,9 @@ const animeSchema = new Schema({
 })
 
 animeSchema.pre("validate", function(next) {
-    this.slug = slug(this.title)
-    console.log(this.slug)
+    if(this.title) {
+        this.slug = slug(this.title)
+    }
     next()
 })
 
