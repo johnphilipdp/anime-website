@@ -1,64 +1,85 @@
-
+const ErrorResponse = require('../_ErrorResponse')
 const Anime = require('../models/Anime')
 
 exports.createAnime = async (req, res) => {
     req.body.user = req.user.id
-    req.body.image = req.file.filename
+    const file = req.file
+
+    if (file) {
+        req.body.image = file.filename
+        if (file.size > process.env.FILE_SIZE_LIMIT)
+
+            return next(new ErrorResponse('Image file size exceeds the limit.', 400))
+    }
 
 
-    const data = await Anime.insertMany(req.body)
+    const anime = await Anime.create(req.body)
 
-    res.status(200).json({
+    return res.status(200).json({
         success: true,
         message: 'New anime has been added.',
-        data: data
+        count: await Anime.countDocuments(),
+        data: anime
     })
 }
 
 exports.getAnimes = async (req, res) => {
-    const data = await Anime.find({})
-    if(!data) {
-        res.status(400).json({
-            sucess: false,
-            message: 'No Anime Found',
-        })
+    const animes = await Anime.find({})
+
+    if (!animes) {
+        return next(new ErrorResponse('Unable to display list of Animes', 404))
     }
-    res.status(200).json({
+
+    return res.status(200).json({
         success: true,
         message: 'Display list of animes.',
-        count: data.length,
-        data: data
+        count: animes.length,
+        data: animes
     })
 }
 
 
 exports.getAnime = async (req, res) => {
+
     const id = req.params.id
-    const data = await Anime.findById(id)
-    res.status(200).json({
+    const anime = await Anime.findById(id)
+
+    if(!anime) {
+        return next(new ErrorResponse(`Anime with the id of: ${id} cannot be found.`, 404))
+    }
+
+    return res.status(200).json({
         sucess: true,
         message: `Showing anime: ${id}`,
-        data: data
+        data: anime
     })
 }
 
 exports.updateAnime = async (req, res) => {
     const id = req.params.id
-    const data = await Anime.findByIdAndUpdate(id, req.body, { new: true })
+    const anime = await Anime.findByIdAndUpdate(id, req.body, { new: true })
 
 
+    if(!anime) {
+        return next( new ErrorResponse(`Anime with the id of: ${id} cannot be found.`, 404))
+    }
 
-    res.status(200).json({
+    return res.status(200).json({
         success: true,
         message: `Updated anime: ${id}`,
-        data: data
+        data: anime
     })
 }
 
-exports.deleteAnime = async (req,res) => {
+exports.deleteAnime = async (req, res) => {
     const id = req.params.id
-    await Anime.findByIdAndDelete(id)
-    res.status(200).json({
+    const anime = await Anime.findByIdAndDelete(id)
+
+    if(!anime) {
+        return next(new ErrorResponse(`Anime with the id of: ${id} cannot be found.`, 404))
+    }
+
+    return res.status(200).json({
         success: true,
         message: `anime ${id} has been removed`
     })

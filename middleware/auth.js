@@ -1,3 +1,4 @@
+const ErrorResponse = require('../_ErrorResponse')
 const jwt = require('jsonwebtoken')
 const User = require('../models/User')
 
@@ -13,10 +14,7 @@ exports.protectRoute = async(req, res ,next) => {
     }
 
     if(!token) {
-        return next(res.status(401).json({
-            success: false,
-            message: 'Unauthorized'
-        }))
+        return next(new ErrorResponse('Unauthorized', 401))
     }
 
     try {
@@ -38,10 +36,7 @@ exports.protectRoute = async(req, res ,next) => {
 exports.authorize = (...roles) => {
     return (req, res , next) => {
         if(!roles.includes(req.user.role)) {
-            return next(res.status(400).json({
-                success: false,
-                message: 'Unauthorized'
-            }))
+            return next(new ErrorResponse('Unauthorized', 401))
         }
         next()
     }

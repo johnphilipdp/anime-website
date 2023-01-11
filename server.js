@@ -3,6 +3,7 @@ const path = require('path')
 const express = require('express')
 const app = express()
 const connectDB = require('./db')
+const errorHandler = require('./middleware/errorHandler')
 // security
 const mongoSanitize = require('express-mongo-sanitize')
 const helmet = require('helmet')
@@ -49,6 +50,8 @@ app.use(express.static(path.join(__dirname, '/public')))
 
 app.use('/api/v1', AnimeRoute)
 app.use('/api/v1/user', User)
+
+app.use(errorHandler)
 
 const PORT = process.env.PORT || 8000
 

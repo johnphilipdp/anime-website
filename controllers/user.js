@@ -1,14 +1,18 @@
-
+const ErrorResponse = require('../_ErrorResponse')
 const User = require('../models/User')
 const sendEmail = require('../_nodemailer.js')
 const crypto = require('crypto')
 
 exports.getUsers = async(req, res, next) => {
-    const data = await User.find({})
+    const users = await User.find({})
+
+    if(!users) {
+        return new ErrorResponse('Cannot retrieve list of users.', 400)
+    }
 
     res.status(200).json({
         message: "Showing list of users.",
-        data: data
+        data: users
     })
 }
 
@@ -16,23 +20,21 @@ exports.login = async(req,res,next) => {
     const { email, password } = req.body
 
     if(!email || !password) {
-        return res.status(400).json({
-            message: 'Email and password required.'
-        })
+        return new ErrorResponse('Email and Password required', 400)
     }
 
     // Check for user
     const user = await User.findOne({ email }).select('+password')
 
     if(!user) {
-        return res.status(401).json({ message: 'Invalid Login Credentials'})
+        return new ErrorResponse('Invalid login credentials', 401)
     }
 
     // check if password matches the user
     const isMatched = await user.matchPassword(password)
 
     if(!isMatched) {
-        return res.status(401).json({message: 'Invalid Login Credentials'})
+        return new ErrorResponse('Invalid login credentials', 401)
     }
 
 
@@ -67,7 +69,7 @@ exports.forgotPassword = async (req, res, next) => {
     const user = await User.findOne({ email: req.body.email })
 
     if(!user) {
-        return next(res.status(404).json({ success: false, message: 'User with that email is not found.'}))
+        return new ErrorResponse('User with that email cannot be found.', 404)
     }
     // Get reset token
     const resetToken = await user.getResetPasswordToken()
@@ -94,11 +96,7 @@ exports.forgotPassword = async (req, res, next) => {
         user.resetPasswordExpiration = undefined
 
         await user.save({ validateBeforeSave: false})
-
-        return next(res.status(500).json({
-            success: false,
-            message: 'Theres an error occured in sending email request.'
-        }))
+        return new ErrorResponse('There was an error in sending email request.', 500)
     }
 }
 
@@ -116,10 +114,7 @@ exports.resetPassword = async (req, res, next) => {
     })
 
     if(!user) {
-        return res.status(400).json({
-            success: false,
-            message: 'Invalid Token'
-        })
+        return new ErrorResponse('Invalid Token', 400)
     }
 
     user.password = req.body.password
@@ -129,7 +124,7 @@ exports.resetPassword = async (req, res, next) => {
 
     res.status(200).json({
         success: true,
-        message: 'Password was reset succesfully'
+        message: 'Password reset success'
     })
 }
 

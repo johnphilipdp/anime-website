@@ -6,7 +6,8 @@ const { Schema } = mongoose;
 const animeSchema = new Schema({
     title: {
         type: String,
-        required: [true, 'Anime title is required.']
+        required: [true, 'Anime title is required.'],
+        unique: [true, 'Anime title already exist.']
     },
     description: {
         type: String,
