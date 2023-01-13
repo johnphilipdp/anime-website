@@ -1,7 +1,7 @@
 const ErrorResponse = require('../_ErrorResponse')
 const Anime = require('../models/Anime')
 
-exports.createAnime = async (req, res) => {
+exports.createAnime = async (req, res, next) => {
     req.body.user = req.user.id
     const file = req.file
 
@@ -23,7 +23,7 @@ exports.createAnime = async (req, res) => {
     })
 }
 
-exports.getAnimes = async (req, res) => {
+exports.getAnimes = async (req, res, next) => {
     const animes = await Anime.find({})
 
     if (!animes) {
@@ -39,7 +39,7 @@ exports.getAnimes = async (req, res) => {
 }
 
 
-exports.getAnime = async (req, res) => {
+exports.getAnime = async (req, res, next) => {
 
     const id = req.params.id
     const anime = await Anime.findById(id)
@@ -55,7 +55,7 @@ exports.getAnime = async (req, res) => {
     })
 }
 
-exports.updateAnime = async (req, res) => {
+exports.updateAnime = async (req, res, next) => {
     const id = req.params.id
     const anime = await Anime.findByIdAndUpdate(id, req.body, { new: true })
 
@@ -71,7 +71,7 @@ exports.updateAnime = async (req, res) => {
     })
 }
 
-exports.deleteAnime = async (req, res) => {
+exports.deleteAnime = async (req, res, next) => {
     const id = req.params.id
     const anime = await Anime.findByIdAndDelete(id)
 

@@ -3,19 +3,6 @@ const User = require('../models/User')
 const sendEmail = require('../_nodemailer.js')
 const crypto = require('crypto')
 
-exports.getUsers = async(req, res, next) => {
-    const users = await User.find({})
-
-    if(!users) {
-        return new ErrorResponse('Cannot retrieve list of users.', 400)
-    }
-
-    res.status(200).json({
-        message: "Showing list of users.",
-        data: users
-    })
-}
-
 exports.login = async(req,res,next) => {
     const { email, password } = req.body
 
@@ -42,6 +29,7 @@ exports.login = async(req,res,next) => {
 
 }
 
+
 exports.logout = async(req,res,next) => {
     res.cookie('token', 'none', {
         expires: new Date(Date.now() + (30 * 60 * 1000)),
@@ -54,6 +42,8 @@ exports.logout = async(req,res,next) => {
     })
 }
 
+
+
 exports.register = async(req,res,next) => {
     const { name, email, role, password } = req.body
     const user = await User.create({
@@ -63,6 +53,7 @@ exports.register = async(req,res,next) => {
 
     sendTokenResponse(user, 200, res)
 }
+
 
 // @desc sends an email reset password link
 exports.forgotPassword = async (req, res, next) => {
@@ -128,57 +119,6 @@ exports.resetPassword = async (req, res, next) => {
     })
 }
 
-
-// @DESC: Method> POST -
-// @route: /api/v1/users/:userId/lists/:animeId
-exports.addAnimeToList = async(req, res) => {
-    const data = await User.findOneAndUpdate({_id: req.params.userId}, {
-        $addToSet: { watchList: req.params.animeId }
-    })
-
-    return res.status(200).json({
-        success: true,
-        message: 'Anime added to your list.'
-    })
-}
-
-
-// @DESC: Method> GET -
-// @route: /api/v1/user//lists
-exports.getUserWatchList = async(req, res) => {
-    const data = await User.findById(req.user._id).populate("watchList")
-
-    return res.status(200).json({
-        success: true,
-        count: data.watchList.length,
-        message: `Displaying watch list for ${data.name}`,
-        data: data.watchList
-    })
-
-}
-
-
-// @DESC: Method> DELETE -
-// @route: /api/v1/users/:userId/lists/:animeId
-exports.removeAnimeFromList = async (req, res) => {
-    await User.findByIdAndUpdate({_id: req.params.id}, {
-        $pull: { watchList: req.params.animeId }
-    })
-
-    return res.status(200).json({
-        success: true,
-        message: 'Removed from your list.'
-    })
-}
-
-exports.getCurrentUser = async(req, res, next) => {
-    const user = await User.findById(req.user.id)
-
-    res.status(200).json({
-        success: true,
-        data: user
-    })
-}
 
 
 

@@ -15,7 +15,8 @@ const cookieParser = require('cookie-parser')
 
 // routes
 const AnimeRoute = require('./routes/animes')
-const User = require('./routes/user')
+const UsersRoute = require('./routes/users')
+const AuthRoute = require('./routes/auth')
 
 // body parser
 app.use(express.json())
@@ -48,8 +49,9 @@ app.use(cors())
 
 app.use(express.static(path.join(__dirname, '/public')))
 
-app.use('/api/v1', AnimeRoute)
-app.use('/api/v1/user', User)
+app.use('/api/v1/auth', AuthRoute)
+app.use('/api/v1/users', UsersRoute)
+app.use('/api/v1/animes', AnimeRoute)
 
 app.use(errorHandler)
 

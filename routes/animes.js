@@ -35,12 +35,12 @@ const {
     deleteAnime
 } = require('../controllers/animes')
 
-router.route('/animes')
+router.route('/')
     .post(protectRoute, upload.single('image'), createAnime)
     .get(getAnimes)
 
 
-router.route('/animes/:id')
+router.route('/:id')
     .get(getAnime)
     .put(protectRoute, authorize('admin'), updateAnime)
     .delete(protectRoute, authorize('admin'), deleteAnime)

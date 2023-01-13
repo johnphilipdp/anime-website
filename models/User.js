@@ -55,7 +55,7 @@ userSchema.pre("validate", async function(next) {
 
 })
 
-// Determine if password matched the crypted password
+// Determine if password matched the encrypted password
 userSchema.methods.matchPassword = async function(password) {
     return await bcrypt.compare(password, this.password)
 }
